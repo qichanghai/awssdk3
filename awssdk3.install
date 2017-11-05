@@ -1,0 +1,48 @@
+<?php
+/**
+ * @file
+ * Install, update, and uninstall functions for the awssdk3 module.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function awssdk3_schema() {
+  // Ctools specific keys:
+  // - identifier = Exports will be as $awssdk_service.
+  // - no export = Do not export database-only keys.
+  $schema['awssdk_services'] = array(
+    'export' => array(
+      'key' => 'name',
+      'key name' => 'Service',
+      'primary key' => 'sid',
+      'identifier' => 'awssdk_service',
+    ),
+    'fields' => array(
+      'sid' => array(
+        'description' => 'Primary ID of the service',
+        'type' => 'serial',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'no export'   => TRUE,
+      ),
+      'name' => array(
+        'description' => 'Unique name of the service',
+        'type' => 'varchar',
+        'length' => '255',
+        'not null' => TRUE,
+      ),
+      'config' => array(
+        'description' => 'AWS-SDK v3 service plugin configuration',
+        'type' => 'text',
+        'not null' => FALSE,
+        'serialize' => TRUE,
+      ),
+    ),
+    'primary key' => array('sid'),
+    'unique keys' => array(
+      'name' => array('name'),
+    ),
+  );
+  return $schema;
+}
